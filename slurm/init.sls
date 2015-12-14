@@ -26,13 +26,6 @@ client:
     - gid_from_name: True
 
     
-{{ slurm.env }}:
-  file.managed:
-    - user: root
-    - group: root
-    - mode: 644
-    - source: salt://slurm/files/slurmd
-    
 #because the rpm not create directory
 /var/run/slurm/:
   file.directory:
