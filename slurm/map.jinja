@@ -2,8 +2,12 @@
   {
   'RedHat': {
         'server': 'slurmctld',
-        'service': 'slurm',
+        'server_bin': '/usr/sbin/slurmctld',
+        'scontrol': '/usr/bin/scontrol',
+        'slurmd': 'slurmd',
+        'slurmd_bin': '/usr/sbin/slurmd',
         'config': '/etc/slurm/slurm.conf',	
+        'env': '/etc/default/slurmd',
         'pkgSlurm':'slurm',
         'pkgSlurmMuge':'slurm-munge',
         'pkgSlurmPlugins':'slurm-plugins',
@@ -15,10 +19,11 @@
         'pkgMungeLibs':'munge-libs',
         'pkgMysqlSever':'mariadb-server',
         'srvMysqlSever':'mariadb',
-        'pkgMySQLpython':'MySQL-python'
+        'pkgMySQLpython':'MySQL-python',
+
         },
   
-  })
+  },merge=salt['pillar.get']('slurm:lookup'))
 
 %}
 
