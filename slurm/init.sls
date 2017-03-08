@@ -19,7 +19,7 @@ slurm_client:
     - context:
         slurm: {{ slurm }}
 
-{% if slurm.user_create == True %}
+{% if slurm.user_create|default(False) == True %}
   user.present:
     - name: slurm
 {% if slurm.homedir is defined %}
