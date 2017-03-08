@@ -1,8 +1,7 @@
 {% from "slurm/map.jinja" import slurm with context %}
 
-client:
+slurm_client:
   pkg.installed:
-    - name: {{ slurm.pkgSlurm }}
     - pkgs:
       - {{ slurm.pkgSlurm }}
       {%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
@@ -11,36 +10,40 @@ client:
       - {{ slurm.pkgSlurmPlugins }}
     - refresh: True
   file.managed:
-    - name: {{ slurm.config }}
+    - name: {{slurm.etcdir}}/slurm.conf
     - user: slurm
     - group: root
     - mode: '644'
     - template: jinja 
     - source: salt://slurm/files/slurm.conf
+    - context:
+        slurm: {{ slurm }}
 
+{% if slurm.user_create == True %}
   user.present:
     - name: slurm
-    - home: /localhome/slurm
-    - uid: 550
-    - gid: 510
+{% if slurm.homedir is defined %}
+    - home: {{ slurm.user_homedir }}
+{% endif %}
+{% if slurm.user_uid is defined %}
+    - uid: {{ slurm.user_uid }}
+{% endif %}
+{% if slurm.user_gid is defined %}
+    - gid: {{ slurm.user_gid }}
+{% else %}
     - gid_from_name: True
+{% endif %}
+    - require_in:
+        - pkg: slurm_client
+{% endif %}
 
     
-#because the rpm not create directory
-/var/run/slurm/:
-  file.directory:
-    - name: 
-    - user: slurm
-    - group: root
-    - makedirs: true
-
 
 {%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
-munge:
+slurm_munge:
   pkg:
-   - installed
+    - name: {{ slurm.pkgMunge }}
   service:
-    - running
     - name: munge
     - enable: True
     - reload: True
@@ -61,36 +64,47 @@ munge:
 {% endif %}
 
 {% if salt['pillar.get']('slurm:TopologyPlugin') in ['tree','3d_torus'] -%}
-topolgy:
+slurm_topolgy:
   file.managed:
-    - name: /etc/slurm/topology.conf
+    - name: {{slurm.etcdir}}/topology.conf
     - user: slurm
     - group: root
     - mode: '0644'
+    - template: jinja
     - source: salt://slurm/files/topology.conf
+    - context:
+        slurm: {{ slurm }}
     - require:
       - pkg: {{ slurm.pkgSlurm }}
 {% endif %}
 
 {% if salt['pillar.get']('slurm:TaskPlugin') in ['cgroup'] -%}
-cgroup::
+slurm_cgroup::
   file.managed:
-    - name: /etc/slurm/cgroup.conf   
+    - name: {{slurm.etcdir}}/cgroup.conf   
     - user: slurm
     - group: root
     - mode: 400
     - template: jinja
     - source: salt://slurm/files/cgroup.conf 
+    - context:
+        slurm: {{ slurm }}
+    - require:
+      - pkg: slurm_client
 {% endif %}
 
 
 {% if salt['pillar.get']('slurm:AcctGatherEnergyType') in ['none','ipmi','ibmaem','cray','rapi'] -%}
-config_energy:
+slurm_config_energy:
   file.managed:
-    - name: /etc/slurm/acct_gather.conf
+    - name: {{slurm.etcdir}}/acct_gather.conf
     - user: slurm
     - group: root
     - mode: 644
     - template: jinja
     - source: salt://slurm/files/acct_gather.conf
+    - context:
+        slurm: {{ slurm }}
+    - require:
+      - pkg: slurm_client
 {% endif %}
