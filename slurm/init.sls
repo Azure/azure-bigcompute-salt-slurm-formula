@@ -48,10 +48,11 @@ slurm_munge:
     - enable: True
     - reload: True
     - watch:
-      - file: /etc/munge/munge.key
+      - file: slurm_munage
     - require:
-      - pkg: {{ slurm.pkgMunge }}
-      - file: /etc/munge/munge.key
+      - pkg: slurm_munge
+    - require_in:
+      - pkg: slurm_client
   file.managed:
     - name: /etc/munge/munge.key
     - user: munge
@@ -60,7 +61,7 @@ slurm_munge:
     - template: jinja
     - source: salt://slurm/files/munge.key 
     - require:
-      - pkg: {{ slurm.pkgMunge }}
+      - pkg: slurm_munge
 {% endif %}
 
 {% if salt['pillar.get']('slurm:TopologyPlugin') in ['tree','3d_torus'] -%}
