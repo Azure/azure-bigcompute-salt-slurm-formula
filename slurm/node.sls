@@ -37,8 +37,8 @@ slurm_cgroup::
     - source: salt://slurm/files/cgroup.conf 
     - context:
         slurm: {{ slurm }}
-    - require:
-      - pkg: slurm_client
+    - require_in:
+      - service: slurm_node
 {% endif %}
 
 
