@@ -39,7 +39,6 @@ slurm_client:
 
     
 
-{%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
 slurm_munge:
   pkg.installed:
     - name: {{ slurm.pkgMunge }}
@@ -66,7 +65,6 @@ slurm_munge_service:
     - require_in:
       - pkg: slurm_client
 
-{% endif %}
 
 ## The default Ubuntu 16.04 version of munge breaks because of permissions
 ## on /var/log/.  We have to override this with --force at service startup
