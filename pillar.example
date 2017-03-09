@@ -1,3 +1,11 @@
+slurm
+  MungeKey64: |
+    MqHMmV2yuM9OsCBs68jHY67TH+yaRwTTO5XKgWMPfSZY5r8arFw7MLihV8UygWVXUGJITIZZsWtk
+    sIrTxbgq/uQMleoUuJe9D2mKhKZdApS5YcnXC9hzrLNmQnHlkIUPQzXSdPABOtuUZmcOyiw4ZAkm
+    6/RyW+Awx5z48eo/fn1SVt5FLzzU2s/adP1xabHlW/hn8IEsHONnYRbIbBNPLCzLVZS/sKTw7Uk0
+    C8uDwz1KEqOjb3ZDizDY4TfVtuV/r9TgLUJ9x51M8ikzLm91SR8ghKmArqKSvUs4RXSJdANiKY5c
+  
+
 slurm:
   ClusterName: "clustername"
   ControlMachine: '<Master slurm server>'

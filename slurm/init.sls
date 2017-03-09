@@ -43,16 +43,27 @@ slurm_munge:
   pkg.installed:
     - name: {{ slurm.pkgMunge }}
 
-slurm_munge_key:
+slurm_munge_key64:
   file.managed:
-    - name: /etc/munge/munge.key
+    - name: /etc/munge/munge.key64
     - user: munge
     - group: munge
     - mode: '0400'
-    - template: jinja
-    - source: salt://slurm/files/munge.key
+    - contents_pillar: slurm:MungeKey64
     - require:
         - pkg: slurm_munge
+
+slurm_munge_key:
+  cmd.wait:
+    - name: base64 -d /etc/munge/munge.key64 >/etc/munge/munge.key
+    - watch:
+        - file: /etc/munge/munge.key64
+  file.managed:
+    - name: /etc/munge/munge.key
+    - requre:
+        - cmd: slurm_munge_key
+    - replace: false
+    - mode: '0400'
 
 slurm_munge_service:
   service.running:
