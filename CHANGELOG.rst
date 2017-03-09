@@ -11,7 +11,9 @@ slurm formula
  - munge key created from base64 pillar value
  - deleted unused defaults.yaml
  - annotated config files as being managed by salt
- - daemon machiens are not necessarily nodes
+ - daemon machines are not necessarily nodes
+ - node-associated config files are now in node.sls
+ - cgroup use is now based on a map.jinja variable
 0.0.2 (2015-12-14)
  - munge dependences repared
  - slurmd macro repared

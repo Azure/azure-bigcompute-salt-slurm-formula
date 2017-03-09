@@ -25,3 +25,50 @@ slurm_logdir:
     - user: slurm
     - group: slurm
     - mode: '0755'
+
+{% if slurm.use_cgroup %}
+slurm_cgroup::
+  file.managed:
+    - name: {{slurm.etcdir}}/cgroup.conf   
+    - user: slurm
+    - group: root
+    - mode: 400
+    - template: jinja
+    - source: salt://slurm/files/cgroup.conf 
+    - context:
+        slurm: {{ slurm }}
+    - require:
+      - pkg: slurm_client
+{% endif %}
+
+
+{% if salt['pillar.get']('slurm:TopologyPlugin') in ['tree','3d_torus'] -%}
+slurm_topolgy:
+  file.managed:
+    - name: {{slurm.etcdir}}/topology.conf
+    - user: slurm
+    - group: root
+    - mode: '0644'
+    - template: jinja
+    - source: salt://slurm/files/topology.conf
+    - context:
+        slurm: {{ slurm }}
+    - require:
+      - pkg: {{ slurm.pkgSlurm }}
+{% endif %}
+
+
+{% if salt['pillar.get']('slurm:AcctGatherEnergyType') in ['none','ipmi','ibmaem','cray','rapi'] -%}
+slurm_config_energy:
+  file.managed:
+    - name: {{slurm.etcdir}}/acct_gather.conf
+    - user: slurm
+    - group: root
+    - mode: 644
+    - template: jinja
+    - source: salt://slurm/files/acct_gather.conf
+    - context:
+        slurm: {{ slurm }}
+    - require:
+      - pkg: slurm_client
+{% endif %}
