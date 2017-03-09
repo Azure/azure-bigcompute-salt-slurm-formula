@@ -53,7 +53,7 @@ slurm_munge_key:
     - template: jinja
     - source: salt://slurm/files/munge.key
     - require:
-        - pkg: slrum_munge
+        - pkg: slurm_munge
 
 slurm_munge_service:
   service.running:
