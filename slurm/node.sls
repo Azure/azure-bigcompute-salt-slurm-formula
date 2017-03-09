@@ -21,6 +21,15 @@ slurm_node:
       - service: munge
       {%endif %}
 
+slurm_node_default:
+  file.managed:
+    - name: /etc/default/{{slurm.slurmd}}
+    - require:
+      - pkg: slurm_node
+    - require_in:
+      - service: slurm_node
+
+
 {% if slurm.use_cgroup %}
 slurm_cgroup::
   file.managed:
