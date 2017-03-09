@@ -74,7 +74,7 @@ slurm_munge_service:
 ## tries to start itself.
 
 {% if grains.os=='Ubuntu' and grains.osrelease=='16.04' %}
-slurm_munge_service:
+slurm_munge_service_config:
   file.managed:
     - name: /etc/systemd/system/munge.service
     - user: root
