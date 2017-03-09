@@ -47,6 +47,6 @@ slurm_server_reload:
   cmd.run:
     - name: {{ slurm.scontrol }} reconfigure
     - require:
-      - file: {{ slurm.config }}
+      - file: slurm_config
     - onchanges:
-      - file: {{ slurm.config }}
+      - file: slurm_config

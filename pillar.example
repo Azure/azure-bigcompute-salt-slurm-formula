@@ -15,9 +15,12 @@ slurm
   AccountingStorageType: slurmdbd
   TaskPlugin: 'cgroup'
   SlurmctldLogFile: '/var/log/slurm/slurmctld.log'
-  AccountingStorageHost: '<slurm accounting server>'
-  AccountingStoragePass: 'slurm accounting passwd'  
-  AccountingStorageUser: 'slurm accountig user'
+  AccountingStorageType: filetxt
+  AccountingStorageHost: db.example.com
+  AccountingStoragePass: /var/run/munge/munge.socket.2
+  AccountingStorageUser: mysql
+  AccountingStoragePort: 1234
+  AccountingStorageLoc: /var/log/slurm
   SlurmDBStorageType: 'database type'
   PropagateResourceLimitsExcept: 'MEMLOCK'
   JobCompLoc: /var/log/slurm/slurm_jobcomp.log

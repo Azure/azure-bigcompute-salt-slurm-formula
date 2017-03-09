@@ -15,6 +15,7 @@ slurm formula
  - node-associated config files, e.g. cgroup.conf, are now in node.sls
  - cgroup use is now based on a map.jinja variable
  - packages for node and server
+ - sorted out default locations for logs, pid files etc
 0.0.2 (2015-12-14)
  - munge dependences repared
  - slurmd macro repared
