@@ -4,9 +4,6 @@ slurm_client:
   pkg.installed:
     - pkgs:
       - {{ slurm.pkgSlurm }}
-      {%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
-      - {{ slurm.pkgSlurmMuge }}
-      {% endif %}
       - {{ slurm.pkgSlurmPlugins }}
     - refresh: True
   file.managed:
@@ -14,7 +11,7 @@ slurm_client:
     - user: slurm
     - group: root
     - mode: '644'
-    - template: jinja 
+    - template: jinja
     - source: salt://slurm/files/slurm.conf
     - context:
         slurm: {{ slurm }}

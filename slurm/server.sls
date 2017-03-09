@@ -1,6 +1,7 @@
 {% from "slurm/map.jinja" import slurm with context %}
 include:
   - slurm
+
 server_log_file:
   file.managed:
     - name: {{ salt['pillar.get']('slurm:SlurmctldLogFile','/var/log/slurm/slurmctld.log') }}

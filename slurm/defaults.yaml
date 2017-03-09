@@ -1,3 +1,0 @@
-{% load_yaml as rawmap %}
-RedHat:
-

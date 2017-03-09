@@ -1,5 +1,15 @@
 slurm formula
 ================
+0.0.3 (??????????)
+ - ported to Ubuntu
+ - fix munge issues with /var/log permission on Ubunty 16.04
+ - tidied up state ID names
+ - move checkpointing to separate state
+ - sorted out client state
+ - munge installation is now mandatory
+ - creating slurm user is optional and default false
+ - munge key created from base64 pillar value
+ - deleted unused defaults.yaml
 0.0.2 (2015-12-14)
  - munge dependences repared
  - slurmd macro repared
