@@ -14,7 +14,7 @@ slurm_config:
     - name: {{slurm.etcdir}}/slurm.conf
     - user: slurm
     - group: root
-    - mode: '644'
+    - mode: '0644'
     - template: jinja
     - source: salt://slurm/files/slurm.conf
     - context:
@@ -47,6 +47,15 @@ slurm_user:
 slurm_munge:
   pkg.installed:
     - name: {{ slurm.pkgMunge }}
+  service.running:
+    - name: munge
+    - enambe: true
+    - watch:
+      - file: slurm_munge_key
+    - require:
+      - pkg: slurm_munge
+    - require_in:
+      - pkg: slurm_client
 
 slurm_munge_key64:
   file.managed:
@@ -69,17 +78,6 @@ slurm_munge_key:
         - cmd: slurm_munge_key
     - replace: false
     - mode: '0400'
-
-slurm_munge_service:
-  service.running:
-    - name: munge
-    - enambe: true
-    - watch:
-      - file: slurm_munge_key
-    - require:
-      - pkg: slurm_munge
-    - require_in:
-      - pkg: slurm_client
 
 
 ## The default Ubuntu 16.04 version of munge breaks because of permissions

@@ -1,93 +1,51 @@
+## SLURM slurmbdb daemon config
+
 {% from "slurm/map.jinja" import slurm with context %}
 
-minion:
+include:
+  - slurm
+  - slurm.logdir
+
+slurm_slurmdbd:
   pkg.installed:
-    - name: {{ slurm.pkgMySQLpython }}
     - pkgs:
-      - {{ slurm.pkgMySQLpython }}
-  file.managed:
-    - name: /etc/salt/minion.d/database.conf 
-    - source: salt://slurm/files/database.conf
-    - replace: True
-    - mode: '0644'
+      - {{ slurm.pkgSlurmDBD }}
+      {% if slurm.pkgSlurmSQL is defined %}
+      - {{ slurm.pkgSlurmSQL }}
+      {% endif %}
   service.running:
-    - name: salt-minion
     - enable: True
-    - reload: True
+    - name: {{ slurm.slurmdbd }}
+    - require:
+      - file: slurm_logdir
+      - pkg: slurm_slurmdbd
+      - service: slurm_munge
     - watch:
-      - file: /etc/salt/minion.d/database.conf
-      
-      
-slrumdbd_mysql:
-  pkg.installed:
-   - name: {{ slurm.pkgMysqlSever }}
-   - pkgs:
-      - {{ slurm.pkgMysqlSever }}
-  service.running:
-    - name: {{ slurm.srvMysqlSever }}
-    - enable: True
-    - reload: True
-  mysql_database.present:
-    - name: slurm_acct_db
-  mysql_user.present:
-    - name: {{ salt['pillar.get']('slurm:AccountingStorageUser','slurm') }}
-    - host: {{ salt['pillar.get']('slurm:AccountingStorageHost','localhost') }}
-    - password: {{ salt['pillar.get']('slurm:AccountingStoragePass','slurm') }}
-    - connection_user: root
-    - connection_charset: utf8
-    - saltenv:
-      - LC_ALL: "en_US.utf8"
-  mysql_grants.present:
-    - name: slurm_acct_db_grant
-    - grant: all privileges
-    - database: slurm_acct_db.*
-    - user: {{ salt['pillar.get']('slurm:AccountingStorageUser','slurm') }}
-    - host: 'localhost'
-    - watch:
-      - mysql_database: slurm_acct_db
-    - requiere: 
-      - mysql_database: slurm_acct_db
-      
+      - file: slurm_slurmdbd_config
 
-
-slurmdbd.conf:
+slurm_slurmdbd_config:
   file.managed:
-    - name: /etc/slurm/slurmdbd.conf
+    - name: {{slurm.etcdir}}/slurmdbd.conf
     - user: root
     - group: root
-    - mode: '644'
-    - replace: True
+    - mode: '0644'
     - template: jinja 
     - source: salt://slurm/files/slurmdbd.conf
+    - context:
+        slurm: {{ slurm }}
 
-
-Bug_rpm_no_create_default_environment_slurmdbd:
-  file.touch:
-    - name: /etc/default/slurmdbd
-    - onlyif:  'test ! -e /etc/default/slurmdbd'
-
-slurmdbd:
-  pkg.installed:
-    - name: {{ slurm.pkgSlurmDBD }}
-    - pkgs:
-      - {{ slurm.pkgSlurmSQL }}
-      - {{ slurm.pkgSlurmDBD }}       
-  service:
-    - running
-    - enable: true
-    - reload: True
-    - name: slurmdbd
-    - watch:
-      - file: /etc/slurm/slurmdbd.conf
+slurm_slurmdb_default:
+  file.managed:
+    - name: /etc/default/{{slurm.slurmdbd}}
     - require:
-      - pkg: {{ slurm.pkgSlurmDBD }}
-       {%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
-      - service: munge
-      {%endif %}
-      - file: /etc/slurm/slurmdbd.conf
-      - mysql_user: {{ salt['pillar.get']('slurm:AccountingStorageUser','slurm') }}
-      - mysql_database: slurm_acct_db
-      - file: Bug_rpm_no_create_default_environment_slurmdbd
+      - pkg: slurm_slurmdbd
+    - require_in:
+      - service: slurm_slurmdbd
+
+
+
+{################
+slurmdbd:
   cmd.run:
     - name: /usr/bin/sacctmgr -i add cluster "{{ salt['pillar.get']('slurm:ClusterName','slurm') }}"
     - unless: sacctmgr show Cluster |grep -i "{{ salt['pillar.get']('slurm:ClusterName','slurm') }}"
@@ -96,4 +54,4 @@ slurmdbd:
     - onlyif:
        - file: exist_default_slurmdb
   
-  
+##################}
