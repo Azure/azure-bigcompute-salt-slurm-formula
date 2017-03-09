@@ -4,21 +4,24 @@ include:
   - slurm
 
 slurm_node:
-{% if slurm.pkgSlurmNode is defined %}
+  {% if slurm.pkgSlurmNode is defined %}
   pkg.installed:
     - name: {{ slurm.pkgSlurmNode }}
-{% endif %}
-  file.directory:
-    - name: /var/log/slurm/
-    - user: slurm
-    - group: slurm
+  {% endif %}
   service.running:
     - enable: True
     - name: {{ slurm.slurmd }}
     - reload: False
     - require:
-      - pkg: {{  slurm.pkgSlurm }}
-      {%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
+      - file: slurm_config
+      - file: slurm_logdir
+      {%  if salt['pillar.get']('slurm:AuthType', 'auth/munge') == 'auth/munge' %}
       - service: munge
       {%endif %}
 
+slurm_logdir:
+  file.directory:
+    - name: {{ slurm.logdir }}
+    - user: slurm
+    - group: slurm
+    - mode: '0755'

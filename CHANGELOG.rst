@@ -6,7 +6,7 @@ slurm formula
  - tidied up state ID names
  - move checkpointing to separate state
  - sorted out client state
- - munge installation is now mandatory
+ - munge installation is now mandatory even if its use is not
  - creating slurm user is optional and default false
  - munge key created from base64 pillar value
  - deleted unused defaults.yaml

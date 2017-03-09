@@ -6,6 +6,8 @@ slurm_client:
       - {{ slurm.pkgSlurm }}
       - {{ slurm.pkgSlurmPlugins }}
     - refresh: True
+
+slurm_config:
   file.managed:
     - name: {{slurm.etcdir}}/slurm.conf
     - user: slurm
@@ -17,6 +19,7 @@ slurm_client:
         slurm: {{ slurm }}
 
 {% if slurm.user_create|default(False) == True %}
+slurm_user:
   user.present:
     - name: slurm
 {% if slurm.homedir is defined %}
@@ -32,6 +35,9 @@ slurm_client:
 {% endif %}
     - require_in:
         - pkg: slurm_client
+        - file: slurm_topology
+        - file: slurm_cgroup
+        - file: slurm_config_energy
 {% endif %}
 
     

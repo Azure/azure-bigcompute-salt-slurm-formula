@@ -10,8 +10,8 @@ slurm
   BackupController: '<slave slurm server>'
   BackupAddr: <ip slurm server>
   CheckpointType: 'blcr'
-  AuthType: 'munge'
-  CryptoType: 'munge'
+  AuthType: 'auth/munge'
+  CryptoType: 'crypto/munge'
   AccountingStorageType: slurmdbd
   TaskPlugin: 'cgroup'
   SlurmctldLogFile: '/var/log/slurm/slurmctld.log'
