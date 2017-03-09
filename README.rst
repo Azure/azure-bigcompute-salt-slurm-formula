@@ -2,11 +2,14 @@
 slurm
 =====
 
-Install the Slurm client, node and/or controller under CentOS 7.0.
+Install the SLURM client, node, controller or database daemon.
 
 .. note::
 
-   We only tested under CentOS 7,0 we expect collaboration for new systems 
+   The original version was tested under CentOS 7.  The port to
+   Unbuntu 16.04 was a considerable change, including removal of the
+   code that sets up a mariadb servers.  It should still work under Centos 7.
+   
    See the full `Salt Formulas installation and usage instructions
    <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
 
@@ -19,25 +22,23 @@ Available states
 ``slurm``
 ---------
 
-Meta-state that includes the basic configuration for a client.
+Install the basic configuration for a client.  Note this is just
+for e.g. a head node and does not include the execution daemon.
 
-is not for computing nodes, only for install login nodes or clients
 
 ``slurm.node``
 --------------
 
-Configure and install ComputerNode
+Configure and install compute node.
 
 ``slurm.server``
 ----------------
 
-Install and configure the Controller.
-
-CentOS family supports setting MySQL 
+Install and configure the control daemon.
 
 
 ``slurm.slurmdbd``
 ------------------
 
-If the accounting option is slurmdbd this state configure the services
+Install and configure database daemon.
 
