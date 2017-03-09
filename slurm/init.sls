@@ -43,16 +43,19 @@ slurm_client:
 slurm_munge:
   pkg:
     - name: {{ slurm.pkgMunge }}
+
   service:
     - name: munge
     - enable: True
     - reload: True
     - watch:
-      - file: slurm_munage
+      - file: slurm_munge_key
     - require:
       - pkg: slurm_munge
     - require_in:
       - pkg: slurm_client
+
+slurm_munge_key:
   file.managed:
     - name: /etc/munge/munge.key
     - user: munge
@@ -60,8 +63,6 @@ slurm_munge:
     - mode: 400
     - template: jinja
     - source: salt://slurm/files/munge.key 
-    - require:
-      - pkg: slurm_munge
 {% endif %}
 
 ## The default Ubuntu 16.04 version of munge breaks because of permissions
@@ -77,6 +78,8 @@ slurm_munge_service:
     - group: root
     - mode: '0644'
     - source: salt://slurm/files/munge.service
+    - require_in:
+        - pkg: slurm_munge
 {% endif %}
 
 {% if salt['pillar.get']('slurm:TopologyPlugin') in ['tree','3d_torus'] -%}
