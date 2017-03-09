@@ -16,6 +16,8 @@ slurm formula
  - cgroup use is now based on a map.jinja variable
  - packages for node and server
  - sorted out default locations for logs, pid files etc
+ - pulled out mysql server setup
+ - pulled out stuff that set up config on the salt minion!
 0.0.2 (2015-12-14)
  - munge dependences repared
  - slurmd macro repared
