@@ -43,7 +43,6 @@ slurm_client:
 slurm_munge:
   pkg:
     - name: {{ slurm.pkgMunge }}
-
   service:
     - name: munge
     - enable: True
