@@ -41,12 +41,24 @@ slurm_client:
 
 {%  if salt['pillar.get']('slurm:AuthType') == 'munge' %}
 slurm_munge:
-  pkg:
+  pkg.installed:
     - name: {{ slurm.pkgMunge }}
-  service:
+
+slurm_munge_key:
+  file.managed:
+    - name: /etc/munge/munge.key
+    - user: munge
+    - group: munge
+    - mode: '0400'
+    - template: jinja
+    - source: salt://slurm/files/munge.key
+    - require:
+        - pkg: slrum_munge
+
+slurm_munge_service:
+  service.running:
     - name: munge
-    - enable: True
-    - reload: True
+    - enambe: true
     - watch:
       - file: slurm_munge_key
     - require:
@@ -54,14 +66,6 @@ slurm_munge:
     - require_in:
       - pkg: slurm_client
 
-slurm_munge_key:
-  file.managed:
-    - name: /etc/munge/munge.key
-    - user: munge
-    - group: munge
-    - mode: 400
-    - template: jinja
-    - source: salt://slurm/files/munge.key 
 {% endif %}
 
 ## The default Ubuntu 16.04 version of munge breaks because of permissions
