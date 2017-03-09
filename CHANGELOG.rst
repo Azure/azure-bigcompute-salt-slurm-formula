@@ -3,7 +3,7 @@ slurm formula
 0.0.3 (??????????)
  - ported to Ubuntu
  - fix munge issues with /var/log permission on Ubunty 16.04
- - tidied up state ID names
+ - namespaced state ID names
  - move checkpointing to separate state
  - sorted out client state
  - munge installation is now mandatory even if its use is not
@@ -12,8 +12,9 @@ slurm formula
  - deleted unused defaults.yaml
  - annotated config files as being managed by salt
  - daemon machines are not necessarily nodes
- - node-associated config files are now in node.sls
+ - node-associated config files, e.g. cgroup.conf, are now in node.sls
  - cgroup use is now based on a map.jinja variable
+ - packages for node and server
 0.0.2 (2015-12-14)
  - munge dependences repared
  - slurmd macro repared

@@ -1,3 +1,5 @@
+## SLURM common config
+
 {% from "slurm/map.jinja" import slurm with context %}
 
 slurm_client:

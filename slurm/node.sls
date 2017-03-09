@@ -1,3 +1,5 @@
+## SLURM compute node config
+
 {% from "slurm/map.jinja" import slurm with context %}
 
 include:
@@ -9,13 +11,12 @@ slurm_node:
     - name: {{ slurm.pkgSlurmNode }}
   {% endif %}
   service.running:
-    - enable: True
     - name: {{ slurm.slurmd }}
-    - reload: False
+    - enable: True
     - require:
       - file: slurm_config
       - file: slurm_logdir
-      {%  if salt['pillar.get']('slurm:AuthType', 'auth/munge') == 'auth/munge' %}
+      {%  if salt['pillar.get']('slurm:AuthType', 'munge') == 'munge' %}
       - service: munge
       {%endif %}
 
