@@ -3,6 +3,7 @@
 {% from "slurm/map.jinja" import slurm with context %}
 include:
   - slurm
+  - slurm.logdir
 
 slurm_server:
   {% if slurm.pkgSlurmServer is defined %}
@@ -19,6 +20,14 @@ slurm_server:
       - service: munge
       {%endif %}
 
+slurm_server_default:
+  file.managed:
+    - name: /etc/default/{{slurm.slurmctld}}
+    - require:
+      - pkg: slurm_server
+    - require_in:
+      - service: slurm_server
+
 
 {########
 
@@ -34,13 +43,6 @@ slurm_server_log:
 
 ###########}
 
-slurm_server_default:
-  file.managed:
-    - name: /etc/default/{{slurm.slurmctld}}
-    - require:
-      - pkg: slurm_server
-    - require_in:
-      - service: slurm_server
 
 
 slurm_server_reload:

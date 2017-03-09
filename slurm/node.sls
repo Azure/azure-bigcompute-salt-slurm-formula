@@ -4,6 +4,7 @@
 
 include:
   - slurm
+  - slurm.logdir
 
 slurm_node:
   {% if slurm.pkgSlurmNode is defined %}
@@ -19,13 +20,6 @@ slurm_node:
       {%  if salt['pillar.get']('slurm:AuthType', 'munge') == 'munge' %}
       - service: munge
       {%endif %}
-
-slurm_logdir:
-  file.directory:
-    - name: {{ slurm.logdir }}
-    - user: slurm
-    - group: slurm
-    - mode: '0755'
 
 {% if slurm.use_cgroup %}
 slurm_cgroup::
