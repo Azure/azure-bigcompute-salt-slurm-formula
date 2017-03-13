@@ -9,6 +9,9 @@ slurm_server:
   {% if slurm.pkgSlurmServer is defined %}
   pkg.installed:
     - name: {{ slurm.pkgSlurmServer }}
+    - require:
+      # slurm packages require valid config else they do not start up
+      - file: slurm_config
   {% endif %}
   service.running:
     - enable: True
@@ -28,21 +31,17 @@ slurm_server_default:
     - require_in:
       - service: slurm_server
 
-
-{########
-
-slurm_server_log:
-  file.managed:
-    - name: {{ salt['pillar.get']('slurm:SlurmctldLogFile','/var/log/slurm/slurmctld.log') }}
+slurm_server_state:
+  file.directory:
+    - name: {{slurmctlddir}}
+    - require:
+        - pkg: slurm_server
+    - require_in:
+        - service: slurm_server
     - user: slurm
     - group: slurm
-    - dir_user: slurm
-    - file_mode: 755
-    - dir_mode: 777
-    - makedirs: True
-
-###########}
-
+    - mode: '0755'
+    - makedirs: true
 
 
 slurm_server_reload:

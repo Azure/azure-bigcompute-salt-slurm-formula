@@ -29,6 +29,19 @@ slurm_node_default:
     - require_in:
       - service: slurm_node
 
+slurm_node_state:
+  file.directory:
+    - name: {{slurmddir}}
+    - require:
+        - pkg: slurm_node
+    - require_in:
+        - service: slurm_node
+    - user: slurm
+    - group: slurm
+    - mode: '0755'
+    - makedirs: true
+
+
 
 {% if slurm.use_cgroup %}
 slurm_cgroup::
