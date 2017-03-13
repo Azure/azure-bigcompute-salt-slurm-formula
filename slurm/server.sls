@@ -33,7 +33,7 @@ slurm_server_default:
 
 slurm_server_state:
   file.directory:
-    - name: {{slurmctlddir}}
+    - name: {{slurm.slurmctlddir}}
     - require:
         - pkg: slurm_server
     - require_in:

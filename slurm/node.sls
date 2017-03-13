@@ -31,7 +31,7 @@ slurm_node_default:
 
 slurm_node_state:
   file.directory:
-    - name: {{slurmddir}}
+    - name: {{slurm.slurmddir}}
     - require:
         - pkg: slurm_node
     - require_in:
