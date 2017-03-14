@@ -16,7 +16,7 @@ slurm_config:
     - group: root
     - mode: '0644'
     - template: jinja
-    - source: salt://slurm/files/slurm.conf
+    - source: salt://slurm/files/slurm.conf.jinja
     - context:
         slurm: {{ slurm }}
 

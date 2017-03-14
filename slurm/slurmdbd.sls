@@ -30,7 +30,7 @@ slurm_slurmdbd_config:
     - group: root
     - mode: '0644'
     - template: jinja 
-    - source: salt://slurm/files/slurmdbd.conf
+    - source: salt://slurm/files/slurmdbd.conf.jinja
     - context:
         slurm: {{ slurm }}
 

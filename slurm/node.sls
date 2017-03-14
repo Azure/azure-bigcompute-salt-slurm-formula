@@ -46,12 +46,12 @@ slurm_node_state:
 {% if slurm.use_cgroup %}
 slurm_cgroup::
   file.managed:
-    - name: {{slurm.etcdir}}/cgroup.conf   
+    - name: {{slurm.etcdir}}/cgroup.conf 
     - user: slurm
     - group: root
     - mode: 400
     - template: jinja
-    - source: salt://slurm/files/cgroup.conf 
+    - source: salt://slurm/files/cgroup.conf.jinja
     - context:
         slurm: {{ slurm }}
     - require_in:
@@ -67,7 +67,7 @@ slurm_topolgy:
     - group: root
     - mode: '0644'
     - template: jinja
-    - source: salt://slurm/files/topology.conf
+    - source: salt://slurm/files/topology.conf.jinja
     - context:
         slurm: {{ slurm }}
     - require:
@@ -75,7 +75,6 @@ slurm_topolgy:
 {% endif %}
 
 
-{% if salt['pillar.get']('slurm:AcctGatherEnergyType') in ['none','ipmi','ibmaem','cray','rapi'] -%}
 slurm_config_energy:
   file.managed:
     - name: {{slurm.etcdir}}/acct_gather.conf
@@ -83,9 +82,9 @@ slurm_config_energy:
     - group: root
     - mode: 644
     - template: jinja
-    - source: salt://slurm/files/acct_gather.conf
+    - source: salt://slurm/files/acct_gather.conf.jinja
     - context:
         slurm: {{ slurm }}
     - require:
       - pkg: slurm_client
-{% endif %}
+
