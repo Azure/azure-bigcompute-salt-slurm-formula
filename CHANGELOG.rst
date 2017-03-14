@@ -2,7 +2,7 @@ slurm formula
 ================
 0.0.3 (??????????)
  - ported to Ubuntu
- - fix munge issues with /var/log permission on Ubunty 16.04
+ - fix munge issues with /var/log permission on Ubuntu 16.04
  - consistent state ID names that shouldn't clash with other states
  - move checkpointing to separate state
  - sorted out client state so it works
@@ -21,6 +21,7 @@ slurm formula
  - slurmdbd config is in the slurmdbd pillar space
  - default slurmdbd storage type is mysql
  - default slurmdbd host localhost
+ - put state files in somewhere more sensible than /tmp
 0.0.2 (2015-12-14)
  - munge dependences repared
  - slurmd macro repared
