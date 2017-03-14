@@ -6,6 +6,8 @@ slurm formula
  - fix munge issues with /var/log permission on Ubuntu 16.04
  - pulled out mysql server setup
  - pulled out stuff that set up config on the salt minion!
+ - sorted out map.jinja pkg* - now lists and renamed
+ - new slurm.devel and slurm.db_devel states
  - munge key created from base64 pillar value
  - put state files in somewhere more sensible than /tmp
  - slurmdbd config is in the slurmdbd pillar space
@@ -16,6 +18,7 @@ slurm formula
  - slurmctld machines are not necessarily nodes
  - consistent state ID names that shouldn't clash with other states
  - move checkpointing to separate state
+ - renamed template sources
  - sorted out client state so it works
  - munge installation is now mandatory even if its use is not
  - creating slurm user is optional and default false

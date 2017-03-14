@@ -7,9 +7,9 @@ include:
   - slurm.logdir
 
 slurm_node:
-  {% if slurm.pkgSlurmNode is defined %}
+  {% if slurm.node_pkgs != [] %}
   pkg.installed:
-    - name: {{ slurm.pkgSlurmNode }}
+    - pkgs: {{ slurm.node_pkgs }}
   {% endif %}
   service.running:
     - name: {{ slurm.slurmd }}
@@ -71,7 +71,7 @@ slurm_topolgy:
     - context:
         slurm: {{ slurm }}
     - require:
-      - pkg: {{ slurm.pkgSlurm }}
+      - pkg: slurm_client
 {% endif %}
 
 

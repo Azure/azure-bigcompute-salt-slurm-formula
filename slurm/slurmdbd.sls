@@ -8,11 +8,7 @@ include:
 
 slurm_slurmdbd:
   pkg.installed:
-    - pkgs:
-      - {{ slurm.pkgSlurmDBD }}
-      {% if slurm.pkgSlurmSQL is defined %}
-      - {{ slurm.pkgSlurmSQL }}
-      {% endif %}
+    - pkgs: {{ slurm.db_pkgs }}
   service.running:
     - enable: True
     - name: {{ slurm.slurmdbd }}

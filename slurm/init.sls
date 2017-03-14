@@ -4,9 +4,7 @@
 
 slurm_client:
   pkg.installed:
-    - pkgs:
-      - {{ slurm.pkgSlurm }}
-      - {{ slurm.pkgSlurmPlugins }}
+    - pkgs: {{ slurm.client_pkgs }}
     - refresh: True
 
 slurm_config:
@@ -46,7 +44,7 @@ slurm_user:
 
 slurm_munge:
   pkg.installed:
-    - name: {{ slurm.pkgMunge }}
+    - pkgs: {{ slurm.munge_pkgs }}
   service.running:
     - name: munge
     - enambe: true

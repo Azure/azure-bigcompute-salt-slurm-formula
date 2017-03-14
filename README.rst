@@ -19,6 +19,7 @@ Available states
 .. contents::
     :local:
 
+
 ``slurm``
 ---------
 
@@ -31,6 +32,7 @@ for e.g. a head node and does not include the execution daemon.
 
 Configure and install compute node.
 
+
 ``slurm.server``
 ----------------
 
@@ -41,4 +43,16 @@ Install and configure the control daemon.
 ------------------
 
 Install and configure database daemon.
+
+
+``slurm.devel``
+------------------
+
+Install and configure SLURM development packages.
+
+
+``slurm.db_devel``
+------------------
+
+Install and configure SLURM database development packages.
 

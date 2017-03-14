@@ -6,9 +6,9 @@ include:
   - slurm.logdir
 
 slurm_server:
-  {% if slurm.pkgSlurmServer is defined %}
+  {% if slurm.server_pkgs != [] %}
   pkg.installed:
-    - name: {{ slurm.pkgSlurmServer }}
+    - pkgs: {{ slurm.server_pkgs }}
     - require:
       # slurm packages require valid config else they do not start up
       - file: slurm_config
