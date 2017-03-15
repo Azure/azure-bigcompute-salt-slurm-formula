@@ -7,10 +7,11 @@ slurm formula
  - pulled out mysql server setup
  - pulled out stuff that set up config on the salt minion!
  - sorted out map.jinja pkg* - now lists and renamed
+ - renamed slurm.slurmdbd to slurm.db
  - new slurm.devel and slurm.db_devel states
  - munge key created from base64 pillar value
  - put state files in somewhere more sensible than /tmp
- - slurmdbd config is in the slurmdbd pillar space
+ - slurmdbd config is in the slurm.db pillar space
  - packages for node and server
  - sorted out default locations for logs, pid files etc
  - cgroup use is now based on a map.jinja variable

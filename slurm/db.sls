@@ -6,7 +6,7 @@ include:
   - slurm
   - slurm.logdir
 
-slurm_slurmdbd:
+slurm_db:
   pkg.installed:
     - pkgs: {{ slurm.db_pkgs }}
   service.running:
@@ -14,12 +14,12 @@ slurm_slurmdbd:
     - name: {{ slurm.slurmdbd }}
     - require:
       - file: slurm_logdir
-      - pkg: slurm_slurmdbd
+      - pkg: slurm_db
       - service: slurm_munge
     - watch:
-      - file: slurm_slurmdbd_config
+      - file: slurm_db_config
 
-slurm_slurmdbd_config:
+slurm_db_config:
   file.managed:
     - name: {{slurm.etcdir}}/slurmdbd.conf
     - user: root
@@ -34,9 +34,9 @@ slurm_slurmdb_default:
   file.managed:
     - name: /etc/default/{{slurm.slurmdbd}}
     - require:
-      - pkg: slurm_slurmdbd
+      - pkg: slurm_db
     - require_in:
-      - service: slurm_slurmdbd
+      - service: slurm_db
 
 
 

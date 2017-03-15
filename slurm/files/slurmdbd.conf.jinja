@@ -3,26 +3,68 @@
 # slurmdbd.conf SLURM database config file
 #
 
-ArchiveEvents=yes
-ArchiveJobs=yes
-ArchiveSteps=no
-ArchiveSuspend=no
-#ArchiveScript=/usr/sbin/slurm.dbd.archive
-{% if salt['pillar.get']('slurmdbd:AuthType','') in ['munge', ''] -%}
-AuthInfo=/var/run/munge/munge.socket.2
-{% endif %}
-AuthType=auth/{{ salt['pillar.get']('slurmdbd:AuthType', 'munge')}}
-DbdHost={{ salt['pillar.get']('slurmdbd:DbdHost', 'localhost') }}
-DebugLevel=4
-PurgeEventAfter=1month
-PurgeJobAfter=12month
-PurgeStepAfter=1month
-PurgeSuspendAfter=1month
-LogFile={{slurm.logdir}}/slurmdbd.log
-PidFile={{slurm.rundir}}/slurmdbd.pid
+{% set slurm_conf = pillar.get('slurm.db', {}) -%}
+
+{%- macro slurmconf(field, default) -%}
+{%- if field in slurm_conf -%}
+{{field}}={{slurm_conf.get(field)}}
+{% else -%}
+# {{field}}={{default}}
+{% endif -%}
+{%- endmacro -%}
+
+{%- macro slurmconf_always(field, default) -%}
+{%- if field in slurm_conf -%}
+{{field}}={{slurm_conf.get(field)}}
+{% else -%}
+{{field}}={{default}}
+{% endif -%}
+{%- endmacro -%}
+
+{%- macro slurmconf_prefix(field, default, prefix) -%}
+{%- if field in slurm_conf -%}
+{{field}}={{prefix}}/{{slurm_conf.get(field)}}
+{% else -%}
+# {{field}}={{default}}
+{% endif -%}
+{%- endmacro -%}
+
+{{ slurmconf('ArchiveScript','') -}}
+{{ slurmconf('ArchiveDir','/tmp') -}}
+{{ slurmconf('ArchiveEvents', 'no') -}}
+{{ slurmconf('ArchiveJobs', 'no') -}}
+{{ slurmconf('ArchiveResvs', 'no') -}}
+{{ slurmconf('ArchiveSteps', 'no') -}}
+{{ slurmconf('ArchiveSuspend', 'no') -}}
+
+{{ slurmconf_prefix('AuthType', 'none', 'auth') -}}
+{{ slurmconf('AuthInfo', '') -}}
+
 SlurmUser=slurm
-{% if salt['pillar.get']('slurmdbd:StorageType', 'mysql') in ['mysql','gold','psql'] -%}
-StorageType=accounting_storage/{{ salt['pillar.get']('slurmdbd:StorageType','mysql' )}}
-{% endif %}
-StorageUser={{ salt['pillar.get']('slurmdbd:StorageUser', 'slurm') }}
-StoragePass={{ salt['pillar.get']('slurmdbd:StoragePass') }}
+{{ slurmconf_always('PluginDir', slurm.plugindir) }}
+{{ slurmconf_always('LogFile', slurm.logdir + '/slurmdbd.log') -}}
+{{ slurmconf_always('PidFile', slurm.rundir + '/slurmdbd.pid') -}}
+{{ slurmconf('DebugLevel', 'info') -}}
+{{ slurmconf('DebugFlags', '') -}}
+{{ slurmconf('LogTimeFormat', 'iso8601_ms') -}}
+
+{{ slurmconf_always('DbdHost', 'localhost') -}}
+{{ slurmconf('DbdBackupHost', '') -}}
+{{ slurmconf('DbdAddr', '') -}}
+{{ slurmconf('DbdPort', '') -}}
+{{ slurmconf('CommitDelay', '0') -}}
+
+{{ slurmconf_always('StorageType', 'accounting_storage/mysql') }}
+{{ slurmconf_always('StorageHost', 'localhost') -}}
+{{ slurmconf('StorageBackupHost', '') -}}
+{{ slurmconf('StorageUser', 'root') -}}
+{{ slurmconf('StoragePass', '') -}}
+{{ slurmconf('StoragePort', '') -}}
+{{ slurmconf('StorageLoc', '') -}}
+
+{{ slurmconf('PurgeEventAfter', '') -}}
+{{ slurmconf('PurgeJobAfter', '') -}}
+{{ slurmconf('PurgeResvAfter', '') -}}
+{{ slurmconf('PurgeStepAfter', '') -}}
+{{ slurmconf('PurgeSuspendAfter', '') -}}
+

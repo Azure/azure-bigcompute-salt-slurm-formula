@@ -39,7 +39,7 @@ Configure and install compute node.
 Install and configure the control daemon.
 
 
-``slurm.slurmdbd``
+``slurm.db``
 ------------------
 
 Install and configure database daemon.
