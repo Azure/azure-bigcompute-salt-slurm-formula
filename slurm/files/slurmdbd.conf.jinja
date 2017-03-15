@@ -3,7 +3,7 @@
 # slurmdbd.conf SLURM database config file
 #
 
-{% set slurm_conf = pillar.get('slurm.db', {}) -%}
+{% set slurm_conf = salt['pillar.get']('slurm:db', {}) -%}
 
 {%- macro slurmconf(field, default) -%}
 {%- if field in slurm_conf -%}
