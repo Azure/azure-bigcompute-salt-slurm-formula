@@ -9,6 +9,7 @@ include:
 slurm_db:
   pkg.installed:
     - pkgs: {{ slurm.db_pkgs }}
+{########
   service.running:
     - enable: True
     - name: {{ slurm.slurmdbd }}
@@ -18,6 +19,7 @@ slurm_db:
       - service: slurm_munge
     - watch:
       - file: slurm_db_config
+########}
 
 slurm_db_config:
   file.managed:
@@ -35,8 +37,10 @@ slurm_slurmdb_default:
     - name: /etc/default/{{slurm.slurmdbd}}
     - require:
       - pkg: slurm_db
+{########
     - require_in:
       - service: slurm_db
+########}
 
 
 
