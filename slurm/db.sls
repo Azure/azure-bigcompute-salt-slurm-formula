@@ -32,7 +32,7 @@ slurm_db_config:
     - context:
         slurm: {{ slurm }}
 
-slurm_slurmdb_default:
+slurm_db_default:
   file.managed:
     - name: /etc/default/{{slurm.slurmdbd}}
     - require:
