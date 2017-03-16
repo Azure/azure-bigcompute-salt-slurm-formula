@@ -65,7 +65,7 @@ SlurmUser=slurm
 {{ slurmconf('CacheGroups','0') -}}
 {{ slurmconf('GroupUpdateForce', '0') -}}
 {{ slurmconf('GroupUpdateTime', '600') -}}
-{{ slurmconf_prefix('ProctrackType', 'pgid', 'proctrack') }}
+{{ slurmconf_prefix('ProctrackType', 'linuxproc', 'proctrack') }}
 {{ slurmconf('PropagateResourceLimits', 'ALL') -}}
 {{ slurmconf('PropagateResourceLimitsExcept', '') -}}
 {{ slurmconf('PropagatePrioProcess', '0') -}}
