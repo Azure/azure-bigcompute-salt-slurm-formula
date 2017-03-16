@@ -25,7 +25,15 @@
 {%- if field in slurm_conf -%}
 {{field}}={{prefix}}/{{slurm_conf.get(field)}}
 {% else -%}
-# {{field}}={{default}}
+# {{field}}={{prefix}}/{{default}}
+{% endif -%}
+{%- endmacro -%}
+
+{%- macro slurmconf_prefix_always(field, default, prefix) -%}
+{%- if field in slurm_conf -%}
+{{field}}={{prefix}}/{{slurm_conf.get(field)}}
+{% else -%}
+{{field}}={{prefix}}/{{default}}
 {% endif -%}
 {%- endmacro -%}
 
@@ -54,7 +62,7 @@ SlurmUser=slurm
 {{ slurmconf('DbdPort', '') -}}
 {{ slurmconf('CommitDelay', '0') -}}
 
-{{ slurmconf_always('StorageType', 'accounting_storage/mysql') }}
+{{ slurmconf_prefix_always('StorageType', 'mysql', 'accounting_storage') }}
 {{ slurmconf_always('StorageHost', 'localhost') -}}
 {{ slurmconf('StorageBackupHost', '') -}}
 {{ slurmconf('StorageUser', 'root') -}}

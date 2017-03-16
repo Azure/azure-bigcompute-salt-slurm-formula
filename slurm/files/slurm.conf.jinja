@@ -25,7 +25,7 @@
 {%- if field in slurm_conf -%}
 {{field}}={{prefix}}/{{slurm_conf.get(field)}}
 {% else -%}
-# {{field}}={{default}}
+# {{field}}={{prefix}}/{{default}}
 {% endif -%}
 {%- endmacro -%}
 
